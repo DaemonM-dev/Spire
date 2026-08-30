@@ -78,6 +78,12 @@
     <ClInclude Include="include\levels\citadel.hpp">
       <Filter>Header Files\Levels</Filter>
     </ClInclude>
+    <ClInclude Include="include\enums\command.hpp">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="include\handlers\input_handler.hpp">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\game.cpp">
@@ -97,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="src\levels\citadel.cpp">
       <Filter>Source Files\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\input_handler.cpp">
+      <Filter>Source Files\Handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

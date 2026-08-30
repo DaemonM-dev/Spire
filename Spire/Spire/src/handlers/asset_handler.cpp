@@ -42,7 +42,7 @@ void AssetHandler::loadAllAssets()
 
 			for (uint8_t i = 1; i < TOTAL_ASSETS; i++) {
 				textures[i].width = textures[i].width * scale.x;
-				textures[i].height = textures[i].height * scale.y + 1;
+				textures[i].height = textures[i].height * scale.y;
 			}
 			assetsLoaded = true;
 		}
