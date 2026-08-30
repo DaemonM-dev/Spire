@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{9f551d68-97ec-4ce4-b03d-67a7892a11e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{1e5055f8-cf13-4251-b65c-3f1af915b628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Handlers">
+      <UniqueIdentifier>{940d11f7-ee56-42fb-8753-73a781078188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Handlers">
+      <UniqueIdentifier>{83c02cb2-bc5e-4f9e-bce2-7eabd00ef6c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{f08a491a-8b7a-481e-b211-5466f6fbb7c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{150e8532-ad4e-42c9-8e3e-7f25ee09eda9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Environment">
+      <UniqueIdentifier>{9f0e970f-3ad7-4150-a751-4cd7f70f017e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\NPC">
+      <UniqueIdentifier>{9365e79b-7e32-4fe3-9e3c-f1f2a4927a23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Player">
+      <UniqueIdentifier>{208fb9c5-1078-4e71-a459-194d9df55056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Default">
+      <UniqueIdentifier>{f5718526-3191-4613-90a6-b89e3b15e9c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Globals">
+      <UniqueIdentifier>{54d359a4-6434-4cf5-904f-f6b6f77e1c92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Enums">
+      <UniqueIdentifier>{3da8a937-9318-46a9-a91d-e3e36ebbf3ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Levels">
+      <UniqueIdentifier>{43801ed9-0c0e-48a2-b929-5ce1cd8968fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Levels">
+      <UniqueIdentifier>{8e24b515-7946-4dc0-94a5-626df32d0992}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\game\game.hpp">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="include\handlers\asset_handler.hpp">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utility\asset_id.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\globals\globals.hpp">
+      <Filter>Header Files\Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="include\enums\gamescreen.hpp">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="include\levels\level.hpp">
+      <Filter>Header Files\Levels</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\game\game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\main.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\asset_handler.cpp">
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utility\asset_id.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\levels\level.cpp">
+      <Filter>Source Files\Levels</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\environment\citadel.png">
+      <Filter>Resource Files\Environment</Filter>
+    </Image>
+    <Image Include="resources\environment\cloud1.png">
+      <Filter>Resource Files\Environment</Filter>
+    </Image>
+    <Image Include="resources\environment\cloud2.png">
+      <Filter>Resource Files\Environment</Filter>
+    </Image>
+    <Image Include="resources\environment\cloud3.png">
+      <Filter>Resource Files\Environment</Filter>
+    </Image>
+    <Image Include="resources\default\default.jpeg">
+      <Filter>Resource Files\Default</Filter>
+    </Image>
+    <Image Include="resources\player\player.png">
+      <Filter>Resource Files\Player</Filter>
+    </Image>
+    <Image Include="resources\npc\rat.png">
+      <Filter>Resource Files\NPC</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

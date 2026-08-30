@@ -1,0 +1,12 @@
+#ifndef GAMESCREEN_HPP
+#define GAMESCREEN_HPP
+enum GameScreen {
+	LOADING,
+	INITIALIZING,
+	MAIN_MENU,
+	GAMEPLAY,
+	PAUSE,
+	INFO,
+	GAMEOVER
+};
+#endif
