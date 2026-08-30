@@ -12,8 +12,8 @@ public:
 
 	AssetHandler();
 
-	int TOTAL_ASSETS = 0;
-	int loadCount = 0;
+	uint8_t TOTAL_ASSETS = 0;
+	uint8_t loadCount = 0;
 	bool assetsLoaded = false;
 	std::vector<AssetID> assetId;
 	std::vector<Texture2D> textures;

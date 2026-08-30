@@ -8,19 +8,19 @@ AssetHandler::AssetHandler(){
 }
 
 const Texture2D& AssetHandler::getTexture(const std::string itemName){
-#ifndef DEBUG
+#ifdef DEBUG
 	std::cout << "\nFetching asset: " << itemName << "\n";
 #endif
-	int length = assetId.size();
-	for (int i = 0; i < length; i++) {
+	uint8_t length = assetId.size();
+	for (uint8_t i = 0; i < length; i++) {
 		if (itemName == assetId[i].name) {
-#ifndef DEBUG
+#ifdef DEBUG
 			std::cout << "Asset fetched: " << itemName << "\n";
 #endif
 			return textures[i];
 		}
 	}
-#ifndef DEBUG
+#ifdef DEBUG
 	std::cout << "Failed to fetch asset: " << itemName << "\n";
 #endif
 	return textures[0];
@@ -29,22 +29,28 @@ void AssetHandler::loadAllAssets()
 {
 	if (!assetsLoaded) {
 		if (loadCount < TOTAL_ASSETS) {
-#ifndef DEBUG
+#ifdef DEBUG
 			if (loadCount == 1) { std::cout << "\nLoading Assets!\n"; }
 #endif
 			loadAsset(assetId[loadCount].name);
 		}
 		else {
-#ifndef DEBUG
+#ifdef DEBUG
 			std::cout << "\nFinished Loading Assets!\n";
 #endif
+			Vector2 scale = { (float)SCREEN_SIZE.x / (float)FULL_SCREEN_SIZE.x, (float)SCREEN_SIZE.y / (float)FULL_SCREEN_SIZE.y };
+
+			for (uint8_t i = 1; i < TOTAL_ASSETS; i++) {
+				textures[i].width = textures[i].width * scale.x;
+				textures[i].height = textures[i].height * scale.y + 1;
+			}
 			assetsLoaded = true;
 		}
 	}
 }
 void AssetHandler::unloadAllAssets(){
-	int length = textures.size();
-	for (int i = 0; i < length; i++) {
+	uint8_t length = textures.size();
+	for (uint8_t i = 0; i < length; i++) {
 		unloadAsset(assetId[i].name);
 	}
 }
@@ -59,6 +65,7 @@ void AssetHandler::initializeAllAssetIds(){
 	addAssetId("cloud1", "resources/environment/cloud1.png");
 	addAssetId("cloud2", "resources/environment/cloud2.png");
 	addAssetId("cloud3", "resources/environment/cloud3.png");
+	addAssetId("sunset", "resources/environment/sunset.png");
 	addAssetId("rat", "resources/npc/rat.png");
 	addAssetId("player", "resources/player/player.png");
 }
@@ -67,15 +74,15 @@ void AssetHandler::addAssetId(const std::string itemName, const char* itemFP){
 	TOTAL_ASSETS++;
 }
 void AssetHandler::loadAsset(const std::string itemName){
-#ifndef DEBUG
+#ifdef DEBUG
 	std::cout << "\nLoading asset: " << itemName << "\n";
 #endif
-	int length = assetId.size();
-	for (int i = 0; i < length; i++) {
+	uint8_t length = assetId.size();
+	for (uint8_t i = 0; i < length; i++) {
 		if (itemName == assetId[i].name) {
 			textures.emplace_back(LoadTexture(assetId[i].filePath));
 			loadCount++;
-#ifndef DEBUG
+#ifdef DEBUG
 	std::cout << "Asset loaded: " << itemName << "\n";
 #endif
 			return;
@@ -83,25 +90,25 @@ void AssetHandler::loadAsset(const std::string itemName){
 	}
 	textures.emplace_back(LoadTexture(assetId[0].filePath));
 	loadCount++;
-#ifndef DEBUG
+#ifdef DEBUG
 	std::cout << "Error - Could not load asset: " << itemName << "\n";
 #endif
 }
 void AssetHandler::unloadAsset(const std::string itemName){
-#ifndef DEBUG
+#ifdef DEBUG
 	std::cout << "\nUnloading asset: " << itemName << "\n";
 #endif
-	int length = assetId.size();
-	for (int i = 0; i < length; i++) {
+	uint8_t length = assetId.size();
+	for (uint8_t i = 0; i < length; i++) {
 		if (itemName == assetId[i].name) {
 			UnloadTexture(textures[i]);
-#ifndef DEBUG
+#ifdef DEBUG
 			std::cout << "Asset unloaded: " << itemName << "\n";
 #endif
 			return;
 		}
 	}
-#ifndef DEBUG
+#ifdef DEBUG
 	std::cout << "Error - Could not unload asset: " << itemName << "\n";
 #endif
 }

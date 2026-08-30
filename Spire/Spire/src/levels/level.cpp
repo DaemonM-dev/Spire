@@ -4,8 +4,8 @@ void Level::reserveComponentSpace(uint8_t size) {
 	components.reserve(size);
 }
 
-void Level::addComponent(std::string name, const Texture2D& texture, Vector2 size, Vector2 pos){
-	components.emplace_back(name, texture, size, pos);
+void Level::addComponent(std::string name, const Texture2D& texture, Vector2 pos){
+	components.emplace_back(name, texture, pos);
 }
 
 void Level::drawComponent(std::string name){

@@ -1,6 +1,7 @@
 #ifndef GLOBALS_HPP
 #define GLOBALS_HPP
 #include <iostream>
+#include <raylib.h>
 // Signed Integers
 // int8_t - (1 Byte)  - MIN: -128   / MAX: 127
 // int16_t - (2 Byte) - MIN: -32768 / MAX: 32767
@@ -23,5 +24,6 @@ public:
 	int16_t y;
 };
 
-static const Vector2ui SCREEN_SIZE{ 960,540 };
+static const Vector2 FULL_SCREEN_SIZE{ 1920, 1080 };
+static const Vector2 SCREEN_SIZE{ 1440,810 };
 #endif

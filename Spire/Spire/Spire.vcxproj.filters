@@ -75,6 +75,9 @@
     <ClInclude Include="include\levels\level.hpp">
       <Filter>Header Files\Levels</Filter>
     </ClInclude>
+    <ClInclude Include="include\levels\citadel.hpp">
+      <Filter>Header Files\Levels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\game.cpp">
@@ -90,6 +93,9 @@
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\levels\level.cpp">
+      <Filter>Source Files\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\levels\citadel.cpp">
       <Filter>Source Files\Levels</Filter>
     </ClCompile>
   </ItemGroup>
@@ -114,6 +120,9 @@
     </Image>
     <Image Include="resources\npc\rat.png">
       <Filter>Resource Files\NPC</Filter>
+    </Image>
+    <Image Include="resources\environment\sunset.png">
+      <Filter>Resource Files\Environment</Filter>
     </Image>
   </ItemGroup>
 </Project>
