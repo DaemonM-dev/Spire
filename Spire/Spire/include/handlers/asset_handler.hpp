@@ -18,17 +18,16 @@ public:
 	std::vector<AssetID> assetId;
 	std::vector<Texture2D> textures;
 
-	const Texture2D& getTexture(const std::string itemName);
+	const Texture2D& getTextureRef(const std::string& itemName) const;
 
 	void loadAllAssets();
 	void unloadAllAssets();
-
 	bool areAssetsLoaded();
 
 private:
 	void initializeAllAssetIds();
-	void addAssetId(const std::string itemName, const char* itemFP);
-	void loadAsset(const std::string itemName);
-	void unloadAsset(const std::string itemName);
+	void addAssetId(const std::string& itemName, const char* itemFP);
+	void loadAsset(const std::string& itemName);
+	void unloadAsset(const std::string& itemName);
 };
 #endif

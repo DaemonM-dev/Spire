@@ -1,37 +1,32 @@
 #include "../../include/levels/citadel.hpp"
 
-Citadel::Citadel(AssetHandler& assets) {
+Citadel::Citadel(std::unique_ptr<AssetHandler> &assets) {
 	this->reserveComponentSpace(8);
 
-	this->addComponent("sunset", assets.getTexture("sunset"), { 0.0f,0.0f });
-	this->addComponent("cloud3.1", assets.getTexture("cloud3"), { 0.0f, -10.0f });
-	this->addComponent("cloud3.2", assets.getTexture("cloud3"), { (float)SCREEN_SIZE.x, -10.0f });
-	this->addComponent("cloud2.1", assets.getTexture("cloud2"), { 0.0f, -20.0f });
-	this->addComponent("cloud2.2", assets.getTexture("cloud2"), { (float)SCREEN_SIZE.x, -20.0f });
-	this->addComponent("cloud1.1", assets.getTexture("cloud1"), { 0.0f, -20.0f });
-	this->addComponent("cloud1.2", assets.getTexture("cloud1"), { (float)SCREEN_SIZE.x, -20.0f });
-	this->addComponent("background", assets.getTexture("citadel"), { 0.0f, 0.0f });
+	this->addComponent("sunset",	 assets->getTextureRef("sunset"),  SCREEN_SIZE, { 0.0f, 0.0f });
+	this->addComponent("cloud3.1",	 assets->getTextureRef("cloud3"),  SCREEN_SIZE, { 0.0f, -35.0f });
+	this->addComponent("cloud3.2",	 assets->getTextureRef("cloud3"),  SCREEN_SIZE, { SCREEN_SIZE.x, -35.0f });
+	this->addComponent("cloud2.1",	 assets->getTextureRef("cloud2"),  SCREEN_SIZE, { 0.0f, -50.0f });
+	this->addComponent("cloud2.2",	 assets->getTextureRef("cloud2"),  SCREEN_SIZE, { SCREEN_SIZE.x, -50.0f });
+	this->addComponent("cloud1.1",	 assets->getTextureRef("cloud1"),  SCREEN_SIZE, { 0.0f, -50.0f });
+	this->addComponent("cloud1.2",	 assets->getTextureRef("cloud1"),  SCREEN_SIZE, { SCREEN_SIZE.x, -50.0f });
+	this->addComponent("background", assets->getTextureRef("citadel"), SCREEN_SIZE, { 0.0f, 0.0f });
 }
 
 void Citadel::update(const float& dt) {
 	moveClouds(dt);
 }
 
-void Citadel::draw(){
-	//DrawRectangleGradientV(0, 0, SCREEN_SIZE.x, SCREEN_SIZE.y, RED, YELLOW);
-	const int LENGTH = components.size();
-	for (int i = 0; i < LENGTH; i++) {
-		//if (i == 6) { continue; }
-		DrawTexture(components[i].texture, components[i].pos.x, components[i].pos.y, WHITE);
-	}
+void Citadel::draw() const{
+	drawAllComponents();
 }
 
 void Citadel::moveClouds(const float& dt){
-	float speed = 2 * dt;
+	float speed = 3 * dt;
 	components[1].pos.x -= speed;
 	components[2].pos.x -= speed;
 
-	speed = 4 * dt;
+	speed = 6 * dt;
 	components[3].pos.x -= speed;
 	components[4].pos.x -= speed;
 

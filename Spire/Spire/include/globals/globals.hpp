@@ -25,5 +25,5 @@ public:
 };
 
 static const Vector2 FULL_SCREEN_SIZE{ 1920, 1080 };
-static const Vector2 SCREEN_SIZE{ 1440,810 };
+static const Vector2 SCREEN_SIZE{ 1920 - (1920 / 3),1080 - (1080 / 3) };
 #endif

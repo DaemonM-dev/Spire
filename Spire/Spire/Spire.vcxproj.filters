@@ -55,6 +55,12 @@
     <Filter Include="Source Files\Levels">
       <UniqueIdentifier>{8e24b515-7946-4dc0-94a5-626df32d0992}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{efd5eb64-f9d7-4e5f-83fa-8a3f00ec43d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player">
+      <UniqueIdentifier>{9a0ba76a-d44c-433f-ac2b-94210d924e61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\game\game.hpp">
@@ -84,6 +90,9 @@
     <ClInclude Include="include\handlers\input_handler.hpp">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
+    <ClInclude Include="include\player\player.hpp">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\game.cpp">
@@ -106,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="src\handlers\input_handler.cpp">
       <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player\player.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

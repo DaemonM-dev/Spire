@@ -6,9 +6,10 @@
 class Citadel : public Level
 {
 public:
-	Citadel(AssetHandler& assets);
-	void update(const float &dt) override;
-	void draw() override;
+	Citadel(std::unique_ptr<AssetHandler> &assets);
+
+	void update(const float &dt);
+	void draw() const;
 private:
 	void moveClouds(const float &dt);
 };

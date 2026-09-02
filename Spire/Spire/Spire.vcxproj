@@ -27,6 +27,7 @@
     <ClInclude Include="include\handlers\input_handler.hpp" />
     <ClInclude Include="include\levels\citadel.hpp" />
     <ClInclude Include="include\levels\level.hpp" />
+    <ClInclude Include="include\player\player.hpp" />
     <ClInclude Include="include\utility\asset_id.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -36,6 +37,7 @@
     <ClCompile Include="src\handlers\input_handler.cpp" />
     <ClCompile Include="src\levels\citadel.cpp" />
     <ClCompile Include="src\levels\level.cpp" />
+    <ClCompile Include="src\player\player.cpp" />
     <ClCompile Include="src\utility\asset_id.cpp" />
   </ItemGroup>
   <ItemGroup>
