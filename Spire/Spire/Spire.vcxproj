@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="component.hpp" />
     <ClInclude Include="include\enums\command.hpp" />
     <ClInclude Include="include\enums\gamescreen.hpp" />
     <ClInclude Include="include\game\game.hpp" />

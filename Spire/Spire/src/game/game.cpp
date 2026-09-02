@@ -30,6 +30,7 @@ void Game::update(const float &dt){
 		break;
 	case INITIALIZING:
 		citadel = std::make_unique<Citadel>(assetHandler);
+		player = std::make_unique<Player>(assetHandler);
 		changeGameScreen(MAIN_MENU);
 		break;
 	case MAIN_MENU:
@@ -57,6 +58,7 @@ void Game::draw(){
 		break;
 	case GAMEPLAY:
 		citadel->draw();
+		player->draw();
 		break;
 	case PAUSE:
 		break;

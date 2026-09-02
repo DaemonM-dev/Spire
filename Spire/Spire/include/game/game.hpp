@@ -9,6 +9,7 @@
 #include "../enums/gamescreen.hpp"
 #include "../handlers/asset_handler.hpp"
 #include "../../include/levels/citadel.hpp"
+#include "../player/player.hpp"
 
 class Game
 {
@@ -22,6 +23,7 @@ private:
 
 	std::unique_ptr<AssetHandler> assetHandler{ nullptr };
 	std::unique_ptr<Citadel> citadel{ nullptr };
+	std::unique_ptr<Player> player{ nullptr };
 
 	void update(const float &dt);
 	void draw();

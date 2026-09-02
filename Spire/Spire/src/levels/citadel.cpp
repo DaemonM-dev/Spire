@@ -1,6 +1,6 @@
 #include "../../include/levels/citadel.hpp"
 
-Citadel::Citadel(std::unique_ptr<AssetHandler> &assets) {
+Citadel::Citadel(const std::unique_ptr<AssetHandler> &assets) {
 	this->reserveComponentSpace(8);
 
 	this->addComponent("sunset",	 assets->getTextureRef("sunset"),  SCREEN_SIZE, { 0.0f, 0.0f });

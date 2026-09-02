@@ -93,6 +93,9 @@
     <ClInclude Include="include\player\player.hpp">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
+    <ClInclude Include="component.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\game.cpp">

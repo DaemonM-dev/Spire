@@ -6,7 +6,7 @@
 class Citadel : public Level
 {
 public:
-	Citadel(std::unique_ptr<AssetHandler> &assets);
+	Citadel(const std::unique_ptr<AssetHandler> &assets);
 
 	void update(const float &dt);
 	void draw() const;
