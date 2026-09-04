@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="component.hpp" />
     <ClInclude Include="include\enums\command.hpp" />
     <ClInclude Include="include\enums\gamescreen.hpp" />
     <ClInclude Include="include\game\game.hpp" />
@@ -30,6 +29,7 @@
     <ClInclude Include="include\levels\level.hpp" />
     <ClInclude Include="include\player\player.hpp" />
     <ClInclude Include="include\utility\asset_id.hpp" />
+    <ClInclude Include="include\utility\img_layer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\game.cpp" />

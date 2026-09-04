@@ -93,7 +93,7 @@
     <ClInclude Include="include\player\player.hpp">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="component.hpp">
+    <ClInclude Include="include\utility\img_layer.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>

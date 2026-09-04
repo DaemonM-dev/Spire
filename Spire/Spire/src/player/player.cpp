@@ -1,10 +1,15 @@
 #include "../../include/player/player.hpp"
 
-Player::Player(const std::unique_ptr<AssetHandler>& assets) : spritesheet(assets->getTextureRef("player")) {}
+void Player::init(const Texture2D &texture)
+{
+	spritesheet = std::make_unique<ImgLayer>("PlayerSprite", texture,
+		Vector2{ (float)texture.width, (float)texture.height },
+		Vector2{ 0.0f, 0.0f });
+}
 
 void Player::draw() {
 	DrawTexturePro(
-		spritesheet,
+		spritesheet->texture,
 		{ 0,0,64.0f,64.0f },
 		{ pos.x, pos.y, size.x, size.y },
 		{ 0.0f,0.0f },
