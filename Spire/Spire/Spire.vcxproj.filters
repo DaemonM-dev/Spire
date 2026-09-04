@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Player">
       <UniqueIdentifier>{9a0ba76a-d44c-433f-ac2b-94210d924e61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Transitions">
+      <UniqueIdentifier>{c0c02207-ac28-4814-bd30-214274fb32ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Transitions">
+      <UniqueIdentifier>{652e1ccf-9ba0-4ce2-8083-495bf53af7ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\game\game.hpp">
@@ -96,6 +102,18 @@
     <ClInclude Include="include\utility\img_layer.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="include\transitions\fade_in.hpp">
+      <Filter>Header Files\Transitions</Filter>
+    </ClInclude>
+    <ClInclude Include="include\transitions\fade_out.hpp">
+      <Filter>Header Files\Transitions</Filter>
+    </ClInclude>
+    <ClInclude Include="include\transitions\transition.hpp">
+      <Filter>Header Files\Transitions</Filter>
+    </ClInclude>
+    <ClInclude Include="include\handlers\transition_handler.hpp">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\game.cpp">
@@ -121,6 +139,18 @@
     </ClCompile>
     <ClCompile Include="src\player\player.cpp">
       <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transitions\fade_in.cpp">
+      <Filter>Source Files\Transitions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transitions\fade_out.cpp">
+      <Filter>Source Files\Transitions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transitions\transition.cpp">
+      <Filter>Source Files\Transitions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\transition_handler.cpp">
+      <Filter>Source Files\Handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

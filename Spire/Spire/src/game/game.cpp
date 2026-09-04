@@ -4,7 +4,8 @@ void Game::run(){
 	SetConfigFlags(FLAG_VSYNC_HINT);
 	InitWindow(SCREEN_SIZE.x, SCREEN_SIZE.y, "Spire");
 	camera = { { (float)SCREEN_SIZE.x, (float)SCREEN_SIZE.y }, { (float)SCREEN_SIZE.x, (float)SCREEN_SIZE.y }, 0.0f, 1.0f };
-	assetHandler = std::make_unique<AssetHandler>();
+	assets = std::make_unique<AssetHandler>();
+	transitions = std::make_unique<TransitionHandler>();
 	while (!WindowShouldClose()){
 		float deltaTime = GetFrameTime();
 		update(deltaTime);
@@ -19,40 +20,24 @@ void Game::run(){
 	CloseWindow();
 }
 
-void Game::fadeIn(const float& dt)
-{
-	if (fadingIn == true && fadeColor.a > 0) {
-		fadeColor.a -= 1 * dt;
-	}
-	else {
-		fadeColor.a = 255;
-		fadingIn = false;
-	}
-}
-
-void Game::drawFadeIn()
-{
-	DrawRectangle(0, 0, SCREEN_SIZE.x, SCREEN_SIZE.y, fadeColor);
-}
 
 void Game::update(const float &dt){
 	switch (screen) {
 	case LOADING:
-		assetHandler->loadAllAssets();
-		if (assetHandler->areAssetsLoaded()) { changeGameScreen(INITIALIZING); }
+		assets->loadAllAssets();
+		if (assets->areAssetsLoaded()) { changeGameScreen(INITIALIZING); }
 		break;
 	case INITIALIZING:
 		citadel = std::make_unique<Citadel>();
-		citadel->init(assetHandler);
+		citadel->init(assets);
 
 		player = std::make_unique<Player>();
-		player->init(assetHandler->getTextureRef("player"));
-		fadingIn = true;
+		player->init(assets->getTextureRef("player"));
 		changeGameScreen(MAIN_MENU);
 		break;
 	case MAIN_MENU:
-		fadeIn(dt);
-		if(fadingIn == false)changeGameScreen(GAMEPLAY);
+		transitions->fadeIn({ (uint16_t)SCREEN_SIZE.x, (uint16_t)SCREEN_SIZE.y }, { 0,0 }, 10.0f);
+		// changeGameScreen(GAMEPLAY);
 		break;
 	case GAMEPLAY:
 		citadel->update(dt);
@@ -64,6 +49,7 @@ void Game::update(const float &dt){
 	case GAMEOVER:
 		break;
 	}
+	transitions->updateTransitions(dt);
 }
 
 void Game::draw(){
@@ -77,7 +63,6 @@ void Game::draw(){
 	case MAIN_MENU:
 		citadel->draw();
 		player->draw();
-		drawFadeIn();
 		break;
 	case GAMEPLAY:
 		citadel->draw();
@@ -90,10 +75,11 @@ void Game::draw(){
 	case GAMEOVER:
 		break;
 	}
+	transitions->drawTransitions();
 }
 void Game::freeResources(){
 	UnloadRenderTexture(window);
-	assetHandler->unloadAllAssets();
+	assets->unloadAllAssets();
 }
 
 void Game::drawStatusScreen(const char* status)

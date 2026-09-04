@@ -8,6 +8,7 @@
 #include "../globals/globals.hpp"
 #include "../enums/gamescreen.hpp"
 #include "../handlers/asset_handler.hpp"
+#include "../handlers/transition_handler.hpp"
 #include "../../include/levels/citadel.hpp"
 #include "../player/player.hpp"
 
@@ -21,12 +22,11 @@ private:
 	GameScreen screen{ GameScreen::LOADING };
 	bool fadingIn = false;
 	Color fadeColor{ 0,0,0,255 };
-	std::unique_ptr<AssetHandler> assetHandler{ nullptr };
+	std::unique_ptr<AssetHandler> assets{ nullptr };
+	std::unique_ptr<TransitionHandler> transitions{ nullptr };
 	std::unique_ptr<Citadel> citadel{ nullptr };
 	std::unique_ptr<Player> player{ nullptr };
 
-	void fadeIn(const float& dt);
-	void drawFadeIn();
 	void update(const float &dt);
 	void draw();
 	void freeResources();
