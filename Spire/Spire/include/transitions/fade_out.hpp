@@ -14,6 +14,7 @@ private:
 	const Vector2ui POS;
 	const float DURATION;
 	const float SPEED;
+	float alpha{ 0.0f };
 	Color color{ 0 ,0 ,0 ,0  }; // Transparent
 	bool active = true;
 

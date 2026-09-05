@@ -1,13 +1,16 @@
 #include "../transitions/fade_out.hpp"
 
 void FadeOut::play(const float& dt) {
-	if (active && color.a < 255) {
-		color.a += SPEED * dt;
-		if (color.a > 255) { color.a = 255; }
-		std::cout << "Transparency: " << color.a << "\n";
-	}
-	else {
-		active = false;
+	if (active) {
+		alpha += SPEED * dt;
+		if (alpha >= 255) {
+			alpha = 255;
+			active = false;
+		}
+		else {
+			color.a = static_cast<unsigned char>(alpha);
+		}
+		std::cout << "Transparency: " << static_cast<int>(color.a) << "\n";
 	}
 }
 void FadeOut::draw() {
