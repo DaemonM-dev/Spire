@@ -5,7 +5,6 @@ void Game::run(){
 	InitWindow(SCREEN_SIZE.x, SCREEN_SIZE.y, "Spire");
 	camera = { { (float)SCREEN_SIZE.x, (float)SCREEN_SIZE.y }, { (float)SCREEN_SIZE.x, (float)SCREEN_SIZE.y }, 0.0f, 1.0f };
 	assets = std::make_unique<AssetHandler>();
-	transitions = std::make_unique<TransitionHandler>();
 	while (!WindowShouldClose()){
 		float deltaTime = GetFrameTime();
 		update(deltaTime);
@@ -35,14 +34,8 @@ void Game::update(const float &dt){
 		changeGameScreen(MAIN_MENU);
 		break;
 	case MAIN_MENU:
-		citadel->update(dt);
-		if (!playingTransition) { 
-			playingTransition = true;
-			transitions->fadeIn({ (uint16_t)SCREEN_SIZE.x, (uint16_t)SCREEN_SIZE.y }, { 0,0 }, 3.0f);
-		}
-		else {
-			if (!transitions->active) { playingTransition = false; changeGameScreen(GAMEPLAY); }
-		}
+		startTransition(FADE_IN, *this);
+		changeGameScreen(GAMEPLAY);
 		break;
 	case GAMEPLAY:
 		citadel->update(dt);
@@ -54,9 +47,6 @@ void Game::update(const float &dt){
 	case GAMEOVER:
 		break;
 	}
-
-	if (!playingTransition) { return; }
-	else { transitions->updateTransitions(dt); }
 }
 
 void Game::draw(){
@@ -84,8 +74,6 @@ void Game::draw(){
 	case GAMEOVER:
 		break;
 	}
-	if (!playingTransition) { return; }
-	else{ transitions->drawTransitions(); }
 }
 void Game::freeResources(){
 	UnloadRenderTexture(window);
@@ -108,4 +96,42 @@ void Game::changeGameScreen(GameScreen newScreen)
 {
 	if (newScreen == screen || newScreen == LOADING) { return; }
 	screen = newScreen;
+}
+
+void startTransition(const TransitionType& type, const Game& game) {
+	std::cout << "Starting Transition\n";
+	bool active = true;
+
+	std::unique_ptr<Transition> activeTransition{ nullptr };
+	const Vector2ui SIZE = { (uint16_t)SCREEN_SIZE.x, (uint16_t)SCREEN_SIZE.y };
+	const Vector2ui POS = { 0,0 };
+	const float DURATION = 3.0f;
+
+	switch (type) {
+	case FADE_IN:
+		activeTransition = std::make_unique<FadeIn>(SIZE, POS, DURATION);
+		break;
+	case FADE_OUT:
+		activeTransition = std::make_unique<FadeOut>(SIZE, POS, DURATION);
+
+		break;
+	}
+
+	while (active) {
+		float dt = GetFrameTime();
+		activeTransition->play(dt);
+		game.citadel->update(dt);
+		if (!activeTransition->isActive()) {
+			activeTransition.reset();
+			active = false;
+			std::cout << "Ending Transition\n";
+			return;
+		}
+		BeginDrawing();
+		ClearBackground(BLACK);
+		game.citadel->draw();
+		game.player->draw();
+		activeTransition->draw();
+		EndDrawing();
+	}
 }
