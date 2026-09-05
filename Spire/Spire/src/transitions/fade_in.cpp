@@ -10,7 +10,6 @@ void FadeIn::play(const float& dt) {
 		else {
 			color.a = static_cast<unsigned char>(alpha);
 		}
-		std::cout << "Transparency: " << static_cast<int>(color.a) << "\n";
 	}
 }
 

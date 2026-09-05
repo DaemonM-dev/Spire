@@ -20,8 +20,7 @@ private:
 	Camera2D camera{ 0 };
 	RenderTexture2D window{ 0 };
 	GameScreen screen{ GameScreen::LOADING };
-	bool fadingIn = false;
-	Color fadeColor{ 0,0,0,255 };
+	bool playingTransition = false;
 	std::unique_ptr<AssetHandler> assets{ nullptr };
 	std::unique_ptr<TransitionHandler> transitions{ nullptr };
 	std::unique_ptr<Citadel> citadel{ nullptr };

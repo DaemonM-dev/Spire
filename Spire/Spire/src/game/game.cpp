@@ -30,14 +30,19 @@ void Game::update(const float &dt){
 	case INITIALIZING:
 		citadel = std::make_unique<Citadel>();
 		citadel->init(assets);
-
 		player = std::make_unique<Player>();
 		player->init(assets->getTextureRef("player"));
 		changeGameScreen(MAIN_MENU);
 		break;
 	case MAIN_MENU:
-		transitions->fadeIn({ (uint16_t)SCREEN_SIZE.x, (uint16_t)SCREEN_SIZE.y }, { 0,0 }, 10.0f);
-		// changeGameScreen(GAMEPLAY);
+		citadel->update(dt);
+		if (!playingTransition) { 
+			playingTransition = true;
+			transitions->fadeIn({ (uint16_t)SCREEN_SIZE.x, (uint16_t)SCREEN_SIZE.y }, { 0,0 }, 3.0f);
+		}
+		else {
+			if (!transitions->active) { playingTransition = false; changeGameScreen(GAMEPLAY); }
+		}
 		break;
 	case GAMEPLAY:
 		citadel->update(dt);
@@ -49,7 +54,9 @@ void Game::update(const float &dt){
 	case GAMEOVER:
 		break;
 	}
-	transitions->updateTransitions(dt);
+
+	if (!playingTransition) { return; }
+	else { transitions->updateTransitions(dt); }
 }
 
 void Game::draw(){
@@ -61,8 +68,10 @@ void Game::draw(){
 		drawStatusScreen("Initializing...");
 		break;
 	case MAIN_MENU:
+		if (playingTransition) {
 		citadel->draw();
 		player->draw();
+	}
 		break;
 	case GAMEPLAY:
 		citadel->draw();
@@ -75,7 +84,8 @@ void Game::draw(){
 	case GAMEOVER:
 		break;
 	}
-	transitions->drawTransitions();
+	if (!playingTransition) { return; }
+	else{ transitions->drawTransitions(); }
 }
 void Game::freeResources(){
 	UnloadRenderTexture(window);
@@ -97,27 +107,5 @@ void Game::drawStatusScreen(const char* status)
 void Game::changeGameScreen(GameScreen newScreen)
 {
 	if (newScreen == screen || newScreen == LOADING) { return; }
-#ifndef DEBUG
-	std::string oldName;
-	switch (screen) {
-	case LOADING: oldName = "LOADING"; break;
-	case INITIALIZING: oldName = "INITIALIZING"; break;
-	case MAIN_MENU: oldName = "MAIN_MENU"; break;
-	case GAMEPLAY: oldName = "GAMEPLAY"; break;
-	case PAUSE: oldName = "PAUSE"; break;
-	case INFO: oldName = "INFO"; break;
-	case GAMEOVER: oldName = "GAMEOVER"; break;}
-	std::string newName;
-	switch (newScreen) {
-	case LOADING: newName = "LOADING"; break;
-	case INITIALIZING: newName = "INITIALIZING"; break;
-	case MAIN_MENU: newName = "MAIN_MENU"; break;
-	case GAMEPLAY: newName = "GAMEPLAY"; break;
-	case PAUSE: newName = "PAUSE"; break;
-	case INFO: newName = "INFO"; break;
-	case GAMEOVER: newName = "GAMEOVER"; break;
-	}
-	std::cout << "\nChanging GameScreen from " << oldName << " to " << newName << "\n";
-#endif
 	screen = newScreen;
 }
