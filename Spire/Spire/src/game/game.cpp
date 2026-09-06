@@ -5,9 +5,7 @@ void Game::run(){
 	InitWindow(SCREEN_SIZE.x, SCREEN_SIZE.y, "Spire");
 	camera = { { (float)SCREEN_SIZE.x, (float)SCREEN_SIZE.y }, { (float)SCREEN_SIZE.x, (float)SCREEN_SIZE.y }, 0.0f, 1.0f };
 	assets = std::make_unique<AssetHandler>();
-	while (gameExit == false){
-		if (gameExit == true) { CloseWindow(); break; }
-		else if (WindowShouldClose()) { gameExit = true; break; }
+	while (!WindowShouldClose()){
 		float deltaTime = GetFrameTime();
 		update(deltaTime);
 		BeginDrawing();
@@ -21,13 +19,9 @@ void Game::run(){
 	CloseWindow();
 }
 
-
-void Game::exitGame()
-{
-	gameExit = true;
-}
-
 void Game::update(const float &dt){
+	if (skip.update) { skip.update = false; return; }
+	handleTransitions(dt);
 	switch (screen) {
 	case LOADING:
 		assets->loadAllAssets();
@@ -41,8 +35,9 @@ void Game::update(const float &dt){
 		changeGameScreen(MAIN_MENU);
 		break;
 	case MAIN_MENU:
-		startTransition(FADE_IN, *this);
+		pendingTransition = FADE_IN;
 		changeGameScreen(GAMEPLAY);
+		skip.draw = true;
 		break;
 	case GAMEPLAY:
 		citadel->update(dt);
@@ -57,6 +52,9 @@ void Game::update(const float &dt){
 }
 
 void Game::draw(){
+
+	if (skip.draw) { skip.draw = false; return; }
+
 	switch (screen) {
 	case LOADING:
 		drawStatusScreen("Loading...");
@@ -65,10 +63,8 @@ void Game::draw(){
 		drawStatusScreen("Initializing...");
 		break;
 	case MAIN_MENU:
-		if (playingTransition) {
 		citadel->draw();
 		player->draw();
-	}
 		break;
 	case GAMEPLAY:
 		citadel->draw();
@@ -81,6 +77,8 @@ void Game::draw(){
 	case GAMEOVER:
 		break;
 	}
+
+	drawTransitions();
 }
 void Game::freeResources(){
 	UnloadRenderTexture(window);
@@ -99,44 +97,50 @@ void Game::drawStatusScreen(const char* status)
 	DrawTextEx(GetFontDefault(), status, textPosition, 60, 2, WHITE);
 }
 
-void Game::changeGameScreen(GameScreen newScreen)
+void Game::handleTransitions(const float& dt)
 {
-	if (newScreen == screen || newScreen == LOADING) { return; }
-	screen = newScreen;
+	if (currentTransition) {
+		currentTransition->play(dt);
+		if (!currentTransition->isActive()) {
+			if(targetScreen != screen){ screen = targetScreen; }
+			std::cout << "Changed Game State\n";
+			currentTransition.reset();
+		}
+	} else {
+		if (pendingTransition != TransitionType::NONE) {
+			startTransition(pendingTransition);
+			pendingTransition = TransitionType::NONE;
+		}
+		if (targetScreen != screen) { screen = targetScreen; std::cout << "Changed Game State\n";
+		}
+	}
 }
 
-void startTransition(const TransitionType& type, Game& game) {
-	bool active = true;
-	std::unique_ptr<Transition> activeTransition{ nullptr };
-	const Vector2ui SIZE = { (uint16_t)SCREEN_SIZE.x, (uint16_t)SCREEN_SIZE.y };
-	const Vector2ui POS = { 0,0 };
+void Game::startTransition(const TransitionType& type)
+{
+	const Vector2ui SIZE = SCREEN_SIZEui;
+	const Vector2ui POS = { 0, 0 };
 	const float DURATION = 3.0f;
+
 	switch (type) {
 	case FADE_IN:
-		activeTransition = std::make_unique<FadeIn>(SIZE, POS, DURATION);
+		currentTransition = std::make_unique<FadeIn>(SIZE, POS, DURATION);
 		break;
 	case FADE_OUT:
-		activeTransition = std::make_unique<FadeOut>(SIZE, POS, DURATION);
+		currentTransition = std::make_unique<FadeOut>(SIZE, POS, DURATION);
 		break;
 	}
-	while (active) {
-		if (WindowShouldClose()) { game.exitGame(); return; }
-		float dt = GetFrameTime();
-		activeTransition->play(dt);
-		game.citadel->update(dt);
-		if (!activeTransition->isActive()) {
-			activeTransition.reset();
-			active = false;
-			std::cout << "Ending Transition\n";
-			return;
-		}
-		BeginDrawing();
-		BeginMode2D(game.camera);
-		ClearBackground(BLACK);
-		game.citadel->draw();
-		game.player->draw();
-		activeTransition->draw();
-		EndMode2D();
-		EndDrawing();
+}
+
+void Game::drawTransitions()
+{
+	if (currentTransition) {
+		currentTransition->draw();
 	}
+}
+
+void Game::changeGameScreen(const GameScreen& newScreen)
+{
+	if (newScreen == targetScreen || newScreen == LOADING) { return; }
+	targetScreen = newScreen;
 }

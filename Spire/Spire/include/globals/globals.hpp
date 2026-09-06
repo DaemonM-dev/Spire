@@ -24,5 +24,6 @@ public:
 	int16_t y;
 };
 
-static const Vector2 SCREEN_SIZE{ 1920,1080};
+static const Vector2 SCREEN_SIZE{ 1920.0f,1080.0f};
+static const Vector2ui SCREEN_SIZEui{ 1920,1080 };
 #endif

@@ -1,5 +1,12 @@
 #ifndef TRANSITION_HPP
 #define TRANSITION_HPP
+
+enum TransitionType {
+	NONE,
+	FADE_IN,
+	FADE_OUT
+};
+
 class Transition
 {
 public:
