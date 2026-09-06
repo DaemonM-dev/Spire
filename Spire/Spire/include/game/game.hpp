@@ -22,6 +22,7 @@ enum TransitionType {
 class Game
 {
 public:
+	bool gameExit = false;
 	void run();
 
 	Camera2D camera{ 0 };
@@ -32,6 +33,7 @@ public:
 	std::unique_ptr<Citadel> citadel{ nullptr };
 	std::unique_ptr<Player> player{ nullptr };
 
+	void exitGame();
 	void update(const float &dt);
 	void draw();
 	void freeResources();
@@ -39,6 +41,6 @@ public:
 	void changeGameScreen(GameScreen newScreen);
 };
 
-void startTransition(const TransitionType& type, const Game& game);
+void startTransition(const TransitionType& type, Game& game);
 
 #endif

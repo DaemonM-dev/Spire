@@ -5,7 +5,9 @@ void Game::run(){
 	InitWindow(SCREEN_SIZE.x, SCREEN_SIZE.y, "Spire");
 	camera = { { (float)SCREEN_SIZE.x, (float)SCREEN_SIZE.y }, { (float)SCREEN_SIZE.x, (float)SCREEN_SIZE.y }, 0.0f, 1.0f };
 	assets = std::make_unique<AssetHandler>();
-	while (!WindowShouldClose()){
+	while (gameExit == false){
+		if (gameExit == true) { CloseWindow(); break; }
+		else if (WindowShouldClose()) { gameExit = true; break; }
 		float deltaTime = GetFrameTime();
 		update(deltaTime);
 		BeginDrawing();
@@ -19,6 +21,11 @@ void Game::run(){
 	CloseWindow();
 }
 
+
+void Game::exitGame()
+{
+	gameExit = true;
+}
 
 void Game::update(const float &dt){
 	switch (screen) {
@@ -98,26 +105,22 @@ void Game::changeGameScreen(GameScreen newScreen)
 	screen = newScreen;
 }
 
-void startTransition(const TransitionType& type, const Game& game) {
-	std::cout << "Starting Transition\n";
+void startTransition(const TransitionType& type, Game& game) {
 	bool active = true;
-
 	std::unique_ptr<Transition> activeTransition{ nullptr };
 	const Vector2ui SIZE = { (uint16_t)SCREEN_SIZE.x, (uint16_t)SCREEN_SIZE.y };
 	const Vector2ui POS = { 0,0 };
 	const float DURATION = 3.0f;
-
 	switch (type) {
 	case FADE_IN:
 		activeTransition = std::make_unique<FadeIn>(SIZE, POS, DURATION);
 		break;
 	case FADE_OUT:
 		activeTransition = std::make_unique<FadeOut>(SIZE, POS, DURATION);
-
 		break;
 	}
-
 	while (active) {
+		if (WindowShouldClose()) { game.exitGame(); return; }
 		float dt = GetFrameTime();
 		activeTransition->play(dt);
 		game.citadel->update(dt);
@@ -128,10 +131,12 @@ void startTransition(const TransitionType& type, const Game& game) {
 			return;
 		}
 		BeginDrawing();
+		BeginMode2D(game.camera);
 		ClearBackground(BLACK);
 		game.citadel->draw();
 		game.player->draw();
 		activeTransition->draw();
+		EndMode2D();
 		EndDrawing();
 	}
 }
