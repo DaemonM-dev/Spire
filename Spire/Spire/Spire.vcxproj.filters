@@ -81,7 +81,7 @@
     <ClInclude Include="include\globals\globals.hpp">
       <Filter>Header Files\Globals</Filter>
     </ClInclude>
-    <ClInclude Include="include\enums\gamescreen.hpp">
+    <ClInclude Include="include\enums\gamestate.hpp">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>
     <ClInclude Include="include\levels\level.hpp">
@@ -110,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="include\transitions\transition.hpp">
       <Filter>Header Files\Transitions</Filter>
+    </ClInclude>
+    <ClInclude Include="include\handlers\transition_handler.hpp">
+      <Filter>Header Files\Handlers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="src\transitions\transition.cpp">
       <Filter>Source Files\Transitions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\transition_handler.cpp">
+      <Filter>Source Files\Handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

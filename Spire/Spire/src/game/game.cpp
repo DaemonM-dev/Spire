@@ -5,6 +5,7 @@ void Game::run(){
 	InitWindow(SCREEN_SIZE.x, SCREEN_SIZE.y, "Spire");
 	camera = { { (float)SCREEN_SIZE.x, (float)SCREEN_SIZE.y }, { (float)SCREEN_SIZE.x, (float)SCREEN_SIZE.y }, 0.0f, 1.0f };
 	assets = std::make_unique<AssetHandler>();
+	transition = std::make_unique<TransitionHandler>();
 	while (!WindowShouldClose()){
 		float deltaTime = GetFrameTime();
 		update(deltaTime);
@@ -20,24 +21,21 @@ void Game::run(){
 }
 
 void Game::update(const float &dt){
-	if (skip.update) { skip.update = false; return; }
-	handleTransitions(dt);
-	switch (screen) {
+	transition->handle(dt);
+	switch (activeState) {
 	case LOADING:
 		assets->loadAllAssets();
-		if (assets->areAssetsLoaded()) { changeGameScreen(INITIALIZING); }
+		if (assets->areAssetsLoaded()) { changeGamestate(INITIALIZING); }
 		break;
 	case INITIALIZING:
 		citadel = std::make_unique<Citadel>();
 		citadel->init(assets);
 		player = std::make_unique<Player>();
 		player->init(assets->getTextureRef("player"));
-		changeGameScreen(MAIN_MENU);
+		changeGamestate(MAIN_MENU);
 		break;
 	case MAIN_MENU:
-		pendingTransition = FADE_IN;
-		changeGameScreen(GAMEPLAY);
-		skip.draw = true;
+		changeGamestate(GAMEPLAY);
 		break;
 	case GAMEPLAY:
 		citadel->update(dt);
@@ -49,13 +47,11 @@ void Game::update(const float &dt){
 	case GAMEOVER:
 		break;
 	}
+	handleGamestate();
 }
 
 void Game::draw(){
-
-	if (skip.draw) { skip.draw = false; return; }
-
-	switch (screen) {
+	switch (activeState) {
 	case LOADING:
 		drawStatusScreen("Loading...");
 		break;
@@ -77,14 +73,12 @@ void Game::draw(){
 	case GAMEOVER:
 		break;
 	}
-
-	drawTransitions();
+	transition->draw();
 }
 void Game::freeResources(){
 	UnloadRenderTexture(window);
 	assets->unloadAllAssets();
 }
-
 void Game::drawStatusScreen(const char* status)
 {
 	uint16_t screenWidth = GetScreenWidth();
@@ -97,50 +91,66 @@ void Game::drawStatusScreen(const char* status)
 	DrawTextEx(GetFontDefault(), status, textPosition, 60, 2, WHITE);
 }
 
-void Game::handleTransitions(const float& dt)
+void Game::handleGamestate()
 {
-	if (currentTransition) {
-		currentTransition->play(dt);
-		if (!currentTransition->isActive()) {
-			if(targetScreen != screen){ screen = targetScreen; }
-			std::cout << "Changed Game State\n";
-			currentTransition.reset();
-		}
-	} else {
-		if (pendingTransition != TransitionType::NONE) {
-			startTransition(pendingTransition);
-			pendingTransition = TransitionType::NONE;
-		}
-		if (targetScreen != screen) { screen = targetScreen; std::cout << "Changed Game State\n";
-		}
+	if (exitingGamestate && transition->isComplete()) {
+		exitingGamestate = false;
+		activeState = cachedState;
+		onStateEnter(activeState);
 	}
 }
 
-void Game::startTransition(const TransitionType& type)
+void Game::changeGamestate(const Gamestate& state)
 {
-	const Vector2ui SIZE = SCREEN_SIZEui;
-	const Vector2ui POS = { 0, 0 };
-	const float DURATION = 3.0f;
+	if (state == activeState || state == cachedState || state == LOADING) { return; }
+	if (exitingGamestate) { return; }
+	if (transition->isActive()) { return; }
 
-	switch (type) {
-	case FADE_IN:
-		currentTransition = std::make_unique<FadeIn>(SIZE, POS, DURATION);
+	cachedState = state;
+	onStateExit(activeState);
+
+	if (transition->isActive()) {
+		exitingGamestate = true;
+	}
+	else {
+		activeState = cachedState;
+		onStateEnter(activeState);
+	}
+}
+
+void Game::onStateEnter(const Gamestate& state)
+{
+	switch (state) {
+	case INITIALIZING:
+		transition->start(FADE_IN, SCREEN_SIZEui, { 0,0 }, 1.0f);
 		break;
-	case FADE_OUT:
-		currentTransition = std::make_unique<FadeOut>(SIZE, POS, DURATION);
+	case MAIN_MENU:
+		transition->start(FADE_IN, SCREEN_SIZEui, { 0,0 }, 3.0f);
+		break;
+	case GAMEPLAY:
+		// transition->start(FADE_IN, SCREEN_SIZEui, { 0,0 }, 3.0f);
+		break;
+	default:
 		break;
 	}
 }
 
-void Game::drawTransitions()
+void Game::onStateExit(const Gamestate& state)
 {
-	if (currentTransition) {
-		currentTransition->draw();
+	switch (state) {
+	case LOADING:
+		transition->start(FADE_OUT, SCREEN_SIZEui, { 0,0 }, 1.0f);
+		break;
+	case INITIALIZING:
+		transition->start(FADE_OUT, SCREEN_SIZEui, { 0,0 }, 1.0f);
+		break;
+	case MAIN_MENU:
+		// transition->start(FADE_OUT, SCREEN_SIZEui, { 0,0 }, 3.0f);
+		break;
+	case GAMEPLAY:
+		//transition->start(FADE_OUT, SCREEN_SIZEui, { 0,0 }, 3.0f);
+		break;
+	default:
+		break; // most states won't need an exit transition
 	}
-}
-
-void Game::changeGameScreen(const GameScreen& newScreen)
-{
-	if (newScreen == targetScreen || newScreen == LOADING) { return; }
-	targetScreen = newScreen;
 }

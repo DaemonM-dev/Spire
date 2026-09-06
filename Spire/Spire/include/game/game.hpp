@@ -6,36 +6,26 @@
 #include <algorithm>
 
 #include "../globals/globals.hpp"
-#include "../enums/gamescreen.hpp"
+#include "../enums/gamestate.hpp"
 #include "../handlers/asset_handler.hpp"
-#include "../transitions/transition.hpp"
-#include "../transitions/fade_in.hpp"
-#include "../transitions/fade_out.hpp"
+#include "../handlers/transition_handler.hpp"
 #include "../../include/levels/citadel.hpp"
 #include "../player/player.hpp"
-
-struct Skip {
-	bool draw{ false };
-	bool update{ false };
-};
 
 class Game
 {
 public:
 
-	Skip skip;
-
 	void run();
 
 	Camera2D camera{ 0 };
 	RenderTexture2D window{ 0 };
-	GameScreen screen{ GameScreen::LOADING };
-	GameScreen targetScreen{ GameScreen::LOADING };
 
-	std::unique_ptr<Transition> currentTransition{ nullptr };
-	TransitionType pendingTransition{ TransitionType::NONE };
+	Gamestate activeState{ Gamestate::LOADING };
+	Gamestate cachedState{ Gamestate::LOADING };
 
 	std::unique_ptr<AssetHandler> assets{ nullptr };
+	std::unique_ptr<TransitionHandler> transition{ nullptr };
 	std::unique_ptr<Citadel> citadel{ nullptr };
 	std::unique_ptr<Player> player{ nullptr };
 
@@ -43,10 +33,11 @@ public:
 	void draw();
 	void freeResources();
 	void drawStatusScreen(const char* status);
-	void changeGameScreen(const GameScreen& newScreen);
 
-	void handleTransitions(const float& dt);
-	void startTransition(const TransitionType& type);
-	void drawTransitions();
+	bool exitingGamestate{ false };
+	void handleGamestate();
+	void changeGamestate(const Gamestate& state);
+	void onStateEnter(const Gamestate& state);
+	void onStateExit(const Gamestate& state);
 };
 #endif

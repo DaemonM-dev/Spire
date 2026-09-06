@@ -1,6 +1,6 @@
-#ifndef GAMESCREEN_HPP
-#define GAMESCREEN_HPP
-enum GameScreen {
+#ifndef GAMESTATE_HPP
+#define GAMESTATE_HPP
+enum Gamestate {
 	LOADING,
 	INITIALIZING,
 	MAIN_MENU,
