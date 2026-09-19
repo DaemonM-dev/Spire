@@ -11,7 +11,7 @@ void TextureComponent::setPosition(float x, float y){
     xPos = x;
     yPos = y;
 }
-void TextureComponent::draw(){
+void TextureComponent::draw() const{
     DrawTexturePro(texture,
         {0.0f, 0.0f, (float)texture.width, (float)texture.height},
         {xPos, yPos, width, height},

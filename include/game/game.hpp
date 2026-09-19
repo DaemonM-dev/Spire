@@ -22,10 +22,18 @@ class Game{
     Vector2 screenSize;
     float gameScale;
 
-    std::map<std::string, Texture2D> textureMap;
+    std::map<std::string, const Texture2D> textureMap;
 
     std::unique_ptr<TextureComponent> sunset{nullptr};
     std::unique_ptr<TextureComponent> columnPath{nullptr};
+
+    std::unique_ptr<TextureComponent> cloud1_1{nullptr};
+    std::unique_ptr<TextureComponent> cloud2_1{nullptr};
+    std::unique_ptr<TextureComponent> cloud3_1{nullptr};
+
+    std::unique_ptr<TextureComponent> cloud1_2{nullptr};
+    std::unique_ptr<TextureComponent> cloud2_2{nullptr};
+    std::unique_ptr<TextureComponent> cloud3_2{nullptr};
 
     void Initialize();
     void Update(const float& dt);

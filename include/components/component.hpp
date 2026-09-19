@@ -17,7 +17,7 @@ class TextureComponent {
 
         void move(float x, float y);
         void setPosition(float x, float y);
-        void draw();
+        void draw() const;
 
     private:
 };
