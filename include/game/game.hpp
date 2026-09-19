@@ -3,7 +3,11 @@
 
 #include <algorithm>
 #include <iostream>
+#include <memory>
+#include <vector>
+#include <map>
 #include <raylib.h>
+#include "component.hpp"
 
 class Game{
     public:
@@ -18,7 +22,10 @@ class Game{
     Vector2 screenSize;
     float gameScale;
 
-    Texture2D background;
+    std::map<std::string, Texture2D> textureMap;
+
+    std::unique_ptr<TextureComponent> sunset{nullptr};
+    std::unique_ptr<TextureComponent> columnPath{nullptr};
 
     void Initialize();
     void Update(const float& dt);

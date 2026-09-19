@@ -30,7 +30,19 @@ void Game::Run(){
     CloseWindow();
 }
 void Game::Initialize(){
-    background = LoadTexture("./resources/textures/environment/citadel.png");
+
+    textureMap.emplace("sunset", LoadTexture("./resources/textures/environment/sunset.png"));
+    textureMap.emplace("citadel", LoadTexture("./resources/textures/environment/citadel.png"));
+
+    sunset = std::make_unique<TextureComponent>(
+        textureMap["sunset"],
+        gameWindowSize.x, gameWindowSize.y, 0.0f, 0.0f
+    );
+
+    columnPath = std::make_unique<TextureComponent>(
+        textureMap["citadel"],
+        gameWindowSize.x, gameWindowSize.y, 0.0f, 0.0f
+    );
 }
 void Game::Update(const float& dt){
     if(dt){return;}
@@ -64,15 +76,16 @@ void Game::DrawRenderWindow(){
     EndDrawing();
 }
 void Game::Draw(){
-    DrawTexturePro(background,
-        {0.0f, 0.0f, (float)background.width, (float)background.height},
-        {0.0f, 0.0f, gameWindowSize.x, gameWindowSize.y},
-        {0.0f, 0.0f},
-        0.0f,
-        RAYWHITE
-        );
+
+    sunset->draw();
+    columnPath->draw();
+
 }
 void Game::FreeResources(){
     UnloadRenderTexture(gameWindow);
-    UnloadTexture(background);
+
+    for (auto it = textureMap.begin(); it != textureMap.end(); ++it) {
+        UnloadTexture(it->second);
+    }
+
 }
