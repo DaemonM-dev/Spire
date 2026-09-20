@@ -20,9 +20,26 @@ Player::Player(const Texture2D& texture) : spritesheet(texture){
     frameWidth = 64;
     frameHeight = 64;
     frameSpeed = 10; // Times per second
+
+
+    jumpForce = 400.0f;
+    gravity = 1100.0f;
+    jumpVelocity = 0.0f;
+    jumpOffset = 0.0f;
+
+    minBoundary = {-35, 185.0f};
+    maxBoundary = {960.0f - width + 35, 540.0f - height + 12};
 }
 
 void Player::update(const float& dt){
+
+    move(dt);
+    jump(dt);
+
+    if(x < minBoundary.x){ x = minBoundary.x; }
+    if(x > maxBoundary.x){ x = maxBoundary.x; }
+    if(y < minBoundary.y){ y = minBoundary.y; }
+    if(y > maxBoundary.y){ y = maxBoundary.y; }
 
     animate(dt);
 }
@@ -90,7 +107,7 @@ void Player::draw(){
             DrawTexturePro(
             spritesheet,
             { (float)col * 64, (float)row * 64, frameWidth, frameHeight},
-            { x, y, width, height},
+            { x, y + jumpOffset, width, height},
             { 0.0f,0.0f },
             0.0f,
             RAYWHITE
@@ -99,7 +116,7 @@ void Player::draw(){
             DrawTexturePro(
             spritesheet,
             { (float)col * 64, (float)row * 64, -frameWidth, frameHeight},
-            { x, y, width, height},
+            { x, y + jumpOffset, width, height},
             { 0.0f,0.0f },
             0.0f,
             RAYWHITE
@@ -157,10 +174,9 @@ void Player::move(const float& dt){
         }
 
         if((upKeyPressed && (leftKeyPressed || rightKeyPressed)) || (downKeyPressed && (leftKeyPressed || rightKeyPressed))){
-                activeSpeed = angleSpeed;
+            activeSpeed = angleSpeed;
         } else if(activeSpeed != normalSpeed){
-                activeSpeed = normalSpeed;
-            }
+            activeSpeed = normalSpeed;
         }
 
         if(upKeyPressed){
@@ -183,4 +199,26 @@ void Player::move(const float& dt){
         if(!upKeyPressed && !downKeyPressed && !leftKeyPressed && !rightKeyPressed){
             changeState(IDLE);
         }
+    }
+}
+
+void Player::jump(const float& dt){
+
+    if(!isJumping){
+        if(IsKeyPressed(KEY_SPACE)){
+            isJumping = true;
+            jumpVelocity = -jumpForce;
+            jumpOffset = 0.0f;
+        }
+        return;
+    }
+
+    jumpVelocity += gravity * dt;
+    jumpOffset += jumpVelocity * dt;
+
+    if(jumpOffset >= 0.0f){
+        jumpOffset = 0.0f;
+        jumpVelocity = 0.0f;
+        isJumping = false;
+    }
 }

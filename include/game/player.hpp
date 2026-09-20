@@ -6,8 +6,7 @@
 
 typedef enum PlayerState {
     IDLE,
-    MOVING,
-    JUMPING,
+    MOVING
 } PlayerState;
 
 typedef enum Direction {
@@ -54,10 +53,20 @@ class Player{
     bool leftKeyPressed {false};
     bool rightKeyPressed {false};
 
+    bool isJumping {false};
+    float jumpForce;
+    float gravity;
+    float jumpVelocity;
+    float jumpOffset;
+
+    Vector2 minBoundary;
+    Vector2 maxBoundary;
+
     void animate(const float& dt);
     void changeDirection(const Direction& newDir);
     void changeState(const PlayerState& newState);
     void move(const float& dt);
+    void jump(const float& dt);
 };
 
 #endif
