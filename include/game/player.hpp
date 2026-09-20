@@ -6,7 +6,8 @@
 
 typedef enum PlayerState {
     IDLE,
-    MOVING
+    MOVING,
+    JUMPING,
 } PlayerState;
 
 typedef enum Direction {
@@ -56,6 +57,7 @@ class Player{
     void animate(const float& dt);
     void changeDirection(const Direction& newDir);
     void changeState(const PlayerState& newState);
+    void move(const float& dt);
 };
 
 #endif

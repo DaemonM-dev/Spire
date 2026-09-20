@@ -24,89 +24,6 @@ Player::Player(const Texture2D& texture) : spritesheet(texture){
 
 void Player::update(const float& dt){
 
-    
-    if(state == IDLE){
-
-        if(IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)){
-            changeDirection(UP);
-            upKeyPressed = true;
-        } else if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)){
-            changeDirection(DOWN);
-            downKeyPressed = true;
-        } else if(IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)){
-            changeDirection(LEFT);
-            leftKeyPressed = true;
-        } else if(IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)){
-            changeDirection(RIGHT);
-            rightKeyPressed = true;
-        }
-
-        if(upKeyPressed || downKeyPressed || leftKeyPressed || rightKeyPressed){
-            changeState(MOVING);
-        }
-
-    } else if (state == MOVING){
-
-        if(IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)){
-            upKeyPressed = true;
-        }
-        if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)){
-            downKeyPressed = true;
-        }
-        if(IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)){
-            leftKeyPressed = true;
-        } 
-        if(IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)){
-            rightKeyPressed = true;
-        }
-
-        if(upKeyPressed){
-            changeDirection(UP);
-        } else if (downKeyPressed){
-            changeDirection(DOWN);
-        } else if (leftKeyPressed){
-            changeDirection(LEFT);
-        } else if (rightKeyPressed){
-            changeDirection(RIGHT);
-        }
-
-        if( (upKeyPressed && (leftKeyPressed || rightKeyPressed)) ||
-            (downKeyPressed && (leftKeyPressed || rightKeyPressed))){
-                activeSpeed = angleSpeed;
-        } else {
-            if(activeSpeed != normalSpeed){activeSpeed = normalSpeed;}
-        }
-
-        if(upKeyPressed){
-            y -= activeSpeed * dt;
-            if(IsKeyReleased(KEY_UP) || IsKeyReleased(KEY_W)){
-                upKeyPressed = false;
-            }
-        }
-        if(downKeyPressed){
-            y += activeSpeed * dt;
-            if(IsKeyReleased(KEY_DOWN) || IsKeyReleased(KEY_S)){
-                downKeyPressed = false;
-            }
-        }
-        if(leftKeyPressed){
-            x -= activeSpeed * dt;
-            if(IsKeyReleased(KEY_LEFT) || IsKeyReleased(KEY_A)){
-                leftKeyPressed = false;
-            }
-        }
-        if(rightKeyPressed){
-            x += activeSpeed * dt;
-            if(IsKeyReleased(KEY_RIGHT) || IsKeyReleased(KEY_D)){
-                rightKeyPressed = false;
-            }
-        }
-
-        if(!upKeyPressed && !downKeyPressed && !leftKeyPressed && !rightKeyPressed){
-            changeState(IDLE);
-        }
-    }
-
     animate(dt);
 }
 
@@ -199,4 +116,71 @@ void Player::animate(const float& dt){
         }
         frameCount = 0;
     }
+}
+
+void Player::move(const float& dt){
+    if(state == IDLE){
+
+        if(IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)){
+            changeDirection(UP);
+            upKeyPressed = true;
+        } else if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)){
+            changeDirection(DOWN);
+            downKeyPressed = true;
+        } else if(IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)){
+            changeDirection(LEFT);
+            leftKeyPressed = true;
+        } else if(IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)){
+            changeDirection(RIGHT);
+            rightKeyPressed = true;
+        }
+
+        if(upKeyPressed || downKeyPressed || leftKeyPressed || rightKeyPressed){
+            changeState(MOVING);
+        }
+
+    } else if (state == MOVING){
+
+        if(IsKeyDown(KEY_UP)    || IsKeyDown(KEY_W)){ upKeyPressed = true; }
+        if(IsKeyDown(KEY_DOWN)  || IsKeyDown(KEY_S)){ downKeyPressed = true; }
+        if(IsKeyDown(KEY_LEFT)  || IsKeyDown(KEY_A)){ leftKeyPressed = true; } 
+        if(IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)){ rightKeyPressed = true; }
+
+        if(upKeyPressed){
+            changeDirection(UP);
+        } else if (downKeyPressed){
+            changeDirection(DOWN);
+        } else if (leftKeyPressed){
+            changeDirection(LEFT);
+        } else if (rightKeyPressed){
+            changeDirection(RIGHT);
+        }
+
+        if((upKeyPressed && (leftKeyPressed || rightKeyPressed)) || (downKeyPressed && (leftKeyPressed || rightKeyPressed))){
+                activeSpeed = angleSpeed;
+        } else if(activeSpeed != normalSpeed){
+                activeSpeed = normalSpeed;
+            }
+        }
+
+        if(upKeyPressed){
+            y -= activeSpeed * dt;
+            if(IsKeyReleased(KEY_UP)    || IsKeyReleased(KEY_W)){ upKeyPressed = false; }
+        }
+        if(downKeyPressed){
+            y += activeSpeed * dt;
+            if(IsKeyReleased(KEY_DOWN)  || IsKeyReleased(KEY_S)){ downKeyPressed = false; }
+        }
+        if(leftKeyPressed){
+            x -= activeSpeed * dt;
+            if(IsKeyReleased(KEY_LEFT)  || IsKeyReleased(KEY_A)){ leftKeyPressed = false; }
+        }
+        if(rightKeyPressed){
+            x += activeSpeed * dt;
+            if(IsKeyReleased(KEY_RIGHT) || IsKeyReleased(KEY_D)){ rightKeyPressed = false; }
+        }
+
+        if(!upKeyPressed && !downKeyPressed && !leftKeyPressed && !rightKeyPressed){
+            changeState(IDLE);
+        }
 }
