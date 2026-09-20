@@ -36,6 +36,7 @@ void Game::Initialize(){
     textureMap.emplace("cloud1", LoadTexture("./resources/textures/environment/cloud1.png"));
     textureMap.emplace("cloud2", LoadTexture("./resources/textures/environment/cloud2.png"));
     textureMap.emplace("cloud3", LoadTexture("./resources/textures/environment/cloud3.png"));
+    textureMap.emplace("player", LoadTexture("./resources/textures/player/player.png"));
 
     sunset = std::make_unique<TextureComponent>(textureMap["sunset"], gameWindowSize.x, gameWindowSize.y, 0.0f, 0.0f);
     columnPath = std::make_unique<TextureComponent>(textureMap["citadel"], gameWindowSize.x, gameWindowSize.y, 0.0f, 0.0f);
@@ -47,6 +48,8 @@ void Game::Initialize(){
     cloud1_2 = std::make_unique<TextureComponent>(textureMap["cloud1"], gameWindowSize.x, gameWindowSize.y, gameWindowSize.x, -30.0f);
     cloud2_2 = std::make_unique<TextureComponent>(textureMap["cloud2"], gameWindowSize.x, gameWindowSize.y, gameWindowSize.x, -25.0f);
     cloud3_2 = std::make_unique<TextureComponent>(textureMap["cloud3"], gameWindowSize.x, gameWindowSize.y, gameWindowSize.x, -15.0f);
+
+    player = std::make_unique<Player>(textureMap["player"]);
 }
 void Game::Update(const float& dt){
     // Front
@@ -79,6 +82,8 @@ void Game::Update(const float& dt){
         cloud3_2->setPosition(cloud3_1->xPos + cloud3_1->width, cloud3_2->yPos);
     }
 
+
+    player->update(dt);
 }
 void Game::UpdateRenderWindow(){
     const Vector2 newScreenSize = {(float)GetScreenWidth(), (float)GetScreenHeight()};
@@ -118,6 +123,9 @@ void Game::Draw(){
     cloud1_1->draw(); // Front
     cloud1_2->draw(); 
     columnPath->draw();
+
+
+    player->draw();
 
 }
 void Game::FreeResources(){

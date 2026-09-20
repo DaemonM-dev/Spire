@@ -8,6 +8,7 @@
 #include <map>
 #include <raylib.h>
 #include "component.hpp"
+#include "player.hpp"
 
 class Game{
     public:
@@ -34,6 +35,8 @@ class Game{
     std::unique_ptr<TextureComponent> cloud1_2{nullptr};
     std::unique_ptr<TextureComponent> cloud2_2{nullptr};
     std::unique_ptr<TextureComponent> cloud3_2{nullptr};
+
+    std::unique_ptr<Player> player{nullptr};
 
     void Initialize();
     void Update(const float& dt);
