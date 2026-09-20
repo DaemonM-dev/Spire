@@ -6,7 +6,7 @@
 
 typedef enum PlayerState {
     IDLE,
-    WALKING
+    MOVING
 } PlayerState;
 
 typedef enum Direction {
@@ -35,14 +35,27 @@ class Player{
     float height;
     float x;
     float y;
+    
+    float activeSpeed;
+    float normalSpeed;
+    float angleSpeed;
 
+    float frameWidth;
+    float frameHeight;
     float frameCount;
     float frameSpeed;   // Frames per second
     int totalFrames;    // Frames per animation
     int row;
     int col;
 
+    bool upKeyPressed {false};
+    bool downKeyPressed {false};
+    bool leftKeyPressed {false};
+    bool rightKeyPressed {false};
+
     void animate(const float& dt);
+    void changeDirection(const Direction& newDir);
+    void changeState(const PlayerState& newState);
 };
 
 #endif

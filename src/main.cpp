@@ -3,6 +3,6 @@
 int main(){
     Game game;
     game.Run();
-    system("pause");
+    // system("pause");
     return 0;
 }
