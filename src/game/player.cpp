@@ -12,6 +12,10 @@ Player::Player(const Texture2D& texture) : spritesheet(texture){
     normalSpeed = 120;
     angleSpeed = normalSpeed * 0.75f;
     activeSpeed = normalSpeed;
+    acceleration = 0.0f;
+
+    slideSpeed = 0.0f;
+    deceleration = 400.0f;
 
     row = 0;
     col = 0;
@@ -20,7 +24,6 @@ Player::Player(const Texture2D& texture) : spritesheet(texture){
     frameWidth = 64;
     frameHeight = 64;
     frameSpeed = 10; // Times per second
-
 
     jumpForce = 400.0f;
     gravity = 1100.0f;
@@ -79,6 +82,7 @@ void Player::changeState(const PlayerState& newState){
             case IDLE:
                 totalFrames = 6;
                 frameSpeed = 10;
+                acceleration = 0.0f;
                 switch (direction){
                     case UP:    row = 1; break;
                     case DOWN:  row = 0; break;
@@ -180,24 +184,46 @@ void Player::move(const float& dt){
         }
 
         if(upKeyPressed){
-            y -= activeSpeed * dt;
+            if(acceleration < 2){acceleration += 5 * dt;}
+            y -= activeSpeed * dt + acceleration;;
             if(IsKeyReleased(KEY_UP)    || IsKeyReleased(KEY_W)){ upKeyPressed = false; }
         }
         if(downKeyPressed){
-            y += activeSpeed * dt;
+            if(acceleration < 2){acceleration += 5 * dt;}
+            y += activeSpeed * dt + acceleration;
             if(IsKeyReleased(KEY_DOWN)  || IsKeyReleased(KEY_S)){ downKeyPressed = false; }
         }
         if(leftKeyPressed){
-            x -= activeSpeed * dt;
+            if(acceleration < 2){acceleration += 5 * dt;}
+            x -= activeSpeed * dt + acceleration;
             if(IsKeyReleased(KEY_LEFT)  || IsKeyReleased(KEY_A)){ leftKeyPressed = false; }
         }
         if(rightKeyPressed){
-            x += activeSpeed * dt;
+            if(acceleration < 2){acceleration += 5 * dt;}
+            x += activeSpeed * dt + acceleration;
             if(IsKeyReleased(KEY_RIGHT) || IsKeyReleased(KEY_D)){ rightKeyPressed = false; }
         }
 
+        if(upKeyPressed || downKeyPressed || leftKeyPressed || rightKeyPressed){
+            slideSpeed = activeSpeed + acceleration;
+        }
+
         if(!upKeyPressed && !downKeyPressed && !leftKeyPressed && !rightKeyPressed){
-            changeState(IDLE);
+            if(slideSpeed > 0.0f){
+                slideSpeed -= deceleration * dt;
+                if(slideSpeed < 0.0f){ slideSpeed = 0.0f; }
+
+                switch(direction){
+                    case UP:    y -= slideSpeed * dt; break;
+                    case DOWN:  y += slideSpeed * dt; break;
+                    case LEFT:  x -= slideSpeed * dt; break;
+                    case RIGHT: x += slideSpeed * dt; break;
+                }
+            }
+
+            if(slideSpeed <= 0.0f){
+                changeState(IDLE);
+            }
         }
     }
 }

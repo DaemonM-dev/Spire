@@ -39,6 +39,10 @@ class Player{
     float activeSpeed;
     float normalSpeed;
     float angleSpeed;
+    float acceleration;
+    float slideSpeed;
+    float deceleration;
+
 
     float frameWidth;
     float frameHeight;
