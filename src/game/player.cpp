@@ -24,6 +24,7 @@ Player::Player(const Texture2D& texture) : spritesheet(texture){
 
 void Player::update(const float& dt){
 
+    
     if(state == IDLE){
 
         if(IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)){
@@ -47,17 +48,26 @@ void Player::update(const float& dt){
     } else if (state == MOVING){
 
         if(IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)){
-            changeDirection(UP);
             upKeyPressed = true;
-        } else if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)){
-            changeDirection(DOWN);
+        }
+        if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)){
             downKeyPressed = true;
-        } else if(IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)){
-            changeDirection(LEFT);
+        }
+        if(IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)){
             leftKeyPressed = true;
-        } else if(IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)){
-            changeDirection(RIGHT);
+        } 
+        if(IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)){
             rightKeyPressed = true;
+        }
+
+        if(upKeyPressed){
+            changeDirection(UP);
+        } else if (downKeyPressed){
+            changeDirection(DOWN);
+        } else if (leftKeyPressed){
+            changeDirection(LEFT);
+        } else if (rightKeyPressed){
+            changeDirection(RIGHT);
         }
 
         if( (upKeyPressed && (leftKeyPressed || rightKeyPressed)) ||
@@ -66,8 +76,6 @@ void Player::update(const float& dt){
         } else {
             if(activeSpeed != normalSpeed){activeSpeed = normalSpeed;}
         }
-
-
 
         if(upKeyPressed){
             y -= activeSpeed * dt;
